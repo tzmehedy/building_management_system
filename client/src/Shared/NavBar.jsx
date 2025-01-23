@@ -5,14 +5,15 @@ import { FaRegUser } from "react-icons/fa";
 
 
 const NavBar = () => {
+    
     return (
-      <div className="fixed z-30 max-w-full container">
+      <div className="fixed z-50  top-0 container mx-auto max-w-full">
         <div className="flex justify-center">
           <Link to={"/"}>
             <img className="h-20 w-48" src={logo} alt="" />
           </Link>
         </div>
-        <div className="navbar mt-0 shadow-sm border border-y-gray-300 border-x-0">
+        <div className="navbar   mt-0 shadow-sm border border-y-gray-300 border-x-0">
           <div className="navbar-start">
             <div className="dropdown">
               <div
@@ -37,7 +38,7 @@ const NavBar = () => {
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 shadow"
               >
                 <li>
                   <NavLink to={"/"}>Home</NavLink>
@@ -49,11 +50,11 @@ const NavBar = () => {
             </div>
           </div>
           <div className="navbar-center hidden lg:flex">
-            <ul className="menu menu-horizontal px-1">
-              <li className="text-xl">
+            <ul className="menu menu-horizontal  space-x-2">
+              <li className="text-xl font-bold">
                 <NavLink to={"/"}>Home</NavLink>
               </li>
-              <li className="text-xl">
+              <li className="text-xl font-bold">
                 <NavLink to={"/apartment"}>Apartment</NavLink>
               </li>
             </ul>
@@ -64,7 +65,7 @@ const NavBar = () => {
             </button>
           </div>
         </div>
-      </div>
+    </div>
     );
 };
 
