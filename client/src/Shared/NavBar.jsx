@@ -7,7 +7,7 @@ import { FaRegUser } from "react-icons/fa";
 const NavBar = () => {
     
     return (
-      <div className="fixed z-50  top-0 container mx-auto max-w-full">
+      <div className="fixed z-50 bg-[#344B8F] opacity-80 top-0 container mx-auto max-w-full">
         <div className="flex justify-center">
           <Link to={"/"}>
             <img className="h-20 w-48" src={logo} alt="" />
@@ -65,7 +65,7 @@ const NavBar = () => {
             </button>
           </div>
         </div>
-    </div>
+      </div>
     );
 };
 
