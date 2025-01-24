@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
 import aboutImage from "../../assets/images/aboutBuildingImage.jpg"
+import { FaArrowRight } from "react-icons/fa";
 
 
 const AboutBuilding = () => {
   return (
     <div className="flex flex-col md:flex-row md:space-x-10">
-      <div className="md:w-1/2 space-y-5 flex flex-col  justify-center">
+      <div className="md:w-1/2 space-y-5 flex flex-col  justify-center md:border-r-2 md:border-gray-300 pr-2">
         <div className="w-1/3 border-b-4 border-gray-600">
           <h1 className="uppercase font-bold text-2xl">Welcome Home</h1>
         </div>
@@ -20,6 +22,9 @@ const AboutBuilding = () => {
             abound at every touchpoint, and with individual climate controls,
             year–round comfort is assured.
           </p>
+        </div>
+        <div>
+            <Link className="underline text-lg font-bold flex items-center gap-1">Explore The Residence <FaArrowRight className=""></FaArrowRight></Link>
         </div>
       </div>
       <div className="md:w-1/2">
