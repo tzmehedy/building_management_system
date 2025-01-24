@@ -12,11 +12,11 @@ const Banner = () => {
           className="h-[700px] bg-cover bg-no-repeat bg-fixed flex justify-center items-center "
           style={{ backgroundImage: `url(${bannerImg1})` }}
         >
-          <div>
+          <div className="space-y-5">
             <h1 className="text-6xl text-white font-bold">
               A New Standard <br /> in Living
             </h1>
-            <button className="w-40 h-40 hover:cursor-pointer">
+            <button className="w-32 h-20 hover:cursor-pointer">
               <video className="rounded-full" src={video1} autoPlay></video>
             </button>
           </div>
@@ -25,11 +25,11 @@ const Banner = () => {
           className="min-h-[700px] bg-cover bg-no-repeat bg-fixed flex justify-center items-center "
           style={{ backgroundImage: `url(${bannerImg2})` }}
         >
-          <div>
+          <div className="space-y-5">
             <h1 className="text-6xl text-white font-bold">
               A New Standard <br /> in Living
             </h1>
-            <button className="w-40 h-40 hover:cursor-pointer">
+            <button className="w-32 h-20 hover:cursor-pointer">
               <video className="rounded-full" src={video1} autoPlay></video>
             </button>
           </div>
@@ -38,11 +38,11 @@ const Banner = () => {
           className="min-h-[700px] bg-cover bg-no-repeat bg-fixed flex justify-center items-center "
           style={{ backgroundImage: `url(${bannerImg3})` }}
         >
-          <div>
+          <div className="space-y-5">
             <h1 className="text-6xl text-white font-bold">
               A New Standard <br /> in Living
             </h1>
-            <button className="w-40 h-40 hover:cursor-pointer">
+            <button className="w-32 h-20 hover:cursor-pointer">
               <video className="rounded-full" src={video1} autoPlay></video>
             </button>
           </div>
