@@ -28,7 +28,7 @@ const AboutLocation = () => {
       </div>
       <div className="md:w-1/2">
         <MapContainer
-          className="h-96"
+          className="h-96 z-10"
           center={[51.505, -0.09]}
           zoom={13}
           scrollWheelZoom={false}

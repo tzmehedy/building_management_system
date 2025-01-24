@@ -59,10 +59,20 @@ const NavBar = () => {
               </li>
             </ul>
           </div>
-          <div className="navbar-end">
-            <button className="btn text-2xl outline-0 flex items-center rounded-xl">
-              <MdMenu></MdMenu> <FaRegUser></FaRegUser>
-            </button>
+          <div className="navbar-end ">
+            <div className="dropdown dropdown-end">
+              <div tabIndex={0} role="button" className="btn m-1">
+                <MdMenu></MdMenu> <FaRegUser></FaRegUser>
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+              >
+                <li>
+                  <Link to={"/login"}>Login</Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
