@@ -1,8 +1,26 @@
 import { FaArrowAltCircleLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaGoogle } from "react-icons/fa";
+import useAuth from "../../Hooks/useAuth";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const {loginWithGoogle} = useAuth()
+  const navigate = useNavigate()
+
+  const handelLogiWithGoogle = () =>{
+    loginWithGoogle()
+    .then(()=>{
+      toast.success("Login Successfully")
+      navigate("/")
+
+    })
+    .catch((err)=>{
+      toast.error(err.message)
+    })
+  }
+
+
     return (
       <div className="bg-[#344B8F] min-h-screen flex justify-center p-10 relative ">
         <div className="absolute top-0 left-0 m-2">
@@ -10,7 +28,7 @@ const Login = () => {
             <FaArrowAltCircleLeft></FaArrowAltCircleLeft> Back To Home
           </Link>
         </div>
-        <div className="bg-[#344B8F] bg shadow-2xl p-10 space-y-5">
+        <div className="bg-white bg shadow-2xl p-10 space-y-5">
           <h1 className="text-3xl font-bold text-center">Login</h1>
 
           <form className="space-y-5">
@@ -43,7 +61,7 @@ const Login = () => {
 
             <div>
               <input
-                className="cursor-pointer btn w-full font-bold"
+                className="cursor-pointer btn w-full font-bold bg-[#344B8F]"
                 type="submit"
                 value="Login"
               />
@@ -53,8 +71,8 @@ const Login = () => {
           <div>
             <p className="text-center">Or</p>
             <div className="flex justify-center space-x-5 mt-3">
-              <button className="cursor-pointer">
-                <FaGoogle className="text-xl text-yellow-300"></FaGoogle>
+              <button onClick={handelLogiWithGoogle} className="cursor-pointer">
+                <FaGoogle className="text-xl text-amber-500"></FaGoogle>
               </button>
               <button className="cursor-pointer">
                 <FaFacebook className="text-xl text-blue-500"></FaFacebook>
@@ -65,7 +83,12 @@ const Login = () => {
             </div>
           </div>
           <div>
-            <p>If You haven&apos;t account? Please <Link to={"/register"} className="underline text-amber-400">Register</Link></p>
+            <p>
+              If You haven&apos;t account? Please{" "}
+              <Link to={"/register"} className="underline font-bold text-amber-400">
+                Register
+              </Link>
+            </p>
           </div>
         </div>
       </div>

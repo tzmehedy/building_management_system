@@ -1,13 +1,65 @@
 import PropTypes from "prop-types";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import auth from "../Firebase/firebase.config";
+
 
 export const AuthContext = createContext()
-const AuthProvider = ({children}) => {
-    const [user, setUser] = useState("Md Touhidur")
+const provider = new GoogleAuthProvider()
 
-    const info ={
-        user
+
+const AuthProvider = ({children}) => {
+    const [user, setUser] = useState()
+    const [loading, setLoading] = useState(true)
+
+    const loginWithGoogle = () =>{
+        setLoading(true)
+        return signInWithPopup(auth, provider)
     }
+    const cerateUser = (email,password)=>{
+        setLoading(true)
+        return createUserWithEmailAndPassword(auth, email,password)
+    }
+
+    const loginWithEmailAndPassword = (email, password)=>{
+        setLoading(true)
+        return signInWithEmailAndPassword(auth,email,password)
+    }
+    const logOut = () =>{
+        setLoading(true)
+        return signOut(auth)
+    }
+
+    const profileUpdate = (name,photo) =>{
+        setLoading(true)
+        return updateProfile(auth.currentUser,{
+            displayName: name,
+            photoURL: photo
+        })
+    }
+
+    useEffect(()=>{
+        const unSubscribe = onAuthStateChanged(auth, currentUser=>{
+            setLoading(false)
+            setUser(currentUser)
+        })
+        return ()=>{
+            unSubscribe()
+        }
+    },[])
+
+
+
+
+    const info = {
+      user,
+      loginWithGoogle,
+      cerateUser,
+      loginWithEmailAndPassword,
+      profileUpdate,
+      logOut,
+      loading,
+    };
     return (
         <AuthContext.Provider value={info}>
             {

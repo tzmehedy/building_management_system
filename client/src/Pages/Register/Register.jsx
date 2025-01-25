@@ -1,7 +1,38 @@
+import axios from "axios";
 import { FaArrowAltCircleLeft} from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
+import { toast } from "react-toastify";
 
+
+const url = `https://api.imgbb.com/1/upload?key=${
+  import.meta.env.VITE_Imgbb_Key
+}`;
 const Register = () => {
+  const { cerateUser, profileUpdate } = useAuth();
+  const navigate = useNavigate()
+  const handelRegister = async(e)=>{
+    e.preventDefault()
+    const form = e.target 
+    const name = form.name.value 
+    const email = form.email.value 
+    const password = form.password.value 
+    const photo = form.photo.files[0]
+    const formData = new FormData()
+    formData.append("image", photo)
+    const {data} = await axios.post(url, formData)
+    if (data.data.display_url){
+      cerateUser(email,password)
+      .then(()=>{
+        toast.success("Registration Successfully Completed")
+        profileUpdate(name,data.data.display_url)
+        navigate("/")
+      })
+      .catch(err=>{
+        toast.error(err.message)
+      })
+    }
+  }
     return (
       <div className="bg-[#344B8F] min-h-screen flex justify-center p-10 relative ">
         <div className="absolute top-0 left-0 m-2">
@@ -9,10 +40,10 @@ const Register = () => {
             <FaArrowAltCircleLeft></FaArrowAltCircleLeft> Back To Home
           </Link>
         </div>
-        <div className="bg-[#344B8F] bg shadow-2xl p-10 space-y-5">
+        <div className="bg-white bg shadow-2xl p-10 space-y-5">
           <h1 className="text-3xl font-bold text-center">Register</h1>
 
-          <form className="space-y-5">
+          <form onSubmit={handelRegister} className="space-y-5">
             <div>
               <label className="font-bold" htmlFor="name">
                 Name
@@ -57,12 +88,17 @@ const Register = () => {
                 Photo URL
               </label>{" "}
               <br />
-              <input className="border-none shadow-2xl cursor-pointer" type="file" name="photo" id="" />
+              <input
+                className="border-none shadow-2xl cursor-pointer"
+                type="file"
+                name="photo"
+                id=""
+              />
             </div>
 
             <div>
               <input
-                className="cursor-pointer btn w-full font-bold"
+                className="cursor-pointer btn w-full font-bold bg-[#344B8F]"
                 type="submit"
                 value="Register"
               />
@@ -71,7 +107,7 @@ const Register = () => {
           <div>
             <p>
               If You already have an account? Please{" "}
-              <Link to={"/login"} className="underline text-amber-400">
+              <Link to={"/login"} className="underline font-bold text-amber-400">
                 Login
               </Link>
             </p>
