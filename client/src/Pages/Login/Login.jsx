@@ -5,7 +5,7 @@ import useAuth from "../../Hooks/useAuth";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const {loginWithGoogle} = useAuth()
+  const { loginWithGoogle, loginWithEmailAndPassword } = useAuth();
   const navigate = useNavigate()
 
   const handelLogiWithGoogle = () =>{
@@ -20,6 +20,22 @@ const Login = () => {
     })
   }
 
+  const handelLoginWithEmailPassword = async(e) =>{
+    e.preventDefault()
+    const form = e.target 
+    const email = form.email.value 
+    const password = form.password.value 
+    loginWithEmailAndPassword(email,password)
+    .then(()=>{
+      toast.success("Login Successfully")
+      navigate("/")
+    })
+    .catch(err=>{
+      toast.error(err.message)
+    })
+
+  }
+
 
     return (
       <div className="bg-[#344B8F] min-h-screen flex justify-center p-10 relative ">
@@ -31,7 +47,7 @@ const Login = () => {
         <div className="bg-white bg shadow-2xl p-10 space-y-5">
           <h1 className="text-3xl font-bold text-center">Login</h1>
 
-          <form className="space-y-5">
+          <form onSubmit={handelLoginWithEmailPassword} className="space-y-5">
             <div>
               <label className="font-bold" htmlFor="email">
                 Email
@@ -85,7 +101,10 @@ const Login = () => {
           <div>
             <p>
               If You haven&apos;t account? Please{" "}
-              <Link to={"/register"} className="underline font-bold text-amber-400">
+              <Link
+                to={"/register"}
+                className="underline font-bold text-amber-400"
+              >
                 Register
               </Link>
             </p>

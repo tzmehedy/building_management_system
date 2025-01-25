@@ -2,9 +2,23 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/images/logo (2).png"
 import { MdMenu } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
+import useAuth from "../Hooks/useAuth";
+import { toast } from "react-toastify";
 
 
 const NavBar = () => {
+  const { user, logOut } = useAuth()
+
+  const handelLogout = () =>{
+    logOut()
+    .then(()=>{
+      toast.success("Successfully Logout")
+    })
+    .catch(err=>{
+      toast.error(err.message)
+    })
+  }
+  
     
     return (
       <div className="fixed z-50 bg-[#344B8F] opacity-80 top-0 container mx-auto max-w-full">
@@ -46,6 +60,23 @@ const NavBar = () => {
                 <li>
                   <NavLink to={"/apartment"}>Apartment</NavLink>
                 </li>
+
+                {user ? (
+                  <>
+                    <li>
+                      <Link to={"/dashboard"}>Dashboard</Link>
+                    </li>
+                    <li>
+                      <Link onClick={handelLogout}>Logout</Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link to={"/login"}>Login</Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
@@ -59,18 +90,45 @@ const NavBar = () => {
               </li>
             </ul>
           </div>
-          <div className="navbar-end ">
+          <div className="navbar-end hidden md:inline-flex">
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn m-1">
-                <MdMenu></MdMenu> <FaRegUser></FaRegUser>
+                <MdMenu></MdMenu>{" "}
+                {user ? (
+                  <>
+                    <img
+                      className="w-7 h-7 rounded-full"
+                      src={user?.photoURL}
+                      alt=""
+                    />
+                  </>
+                ) : (
+                  <>
+                    <FaRegUser></FaRegUser>
+                  </>
+                )}
               </div>
               <ul
                 tabIndex={0}
                 className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
               >
-                <li>
-                  <Link to={"/login"}>Login</Link>
-                </li>
+                {user ? (
+                  <>
+                    <li>
+                      <Link to={"/dashboard"}>Dashboard</Link>
+                    </li>
+                    <li>
+                      <Link onClick={handelLogout}>Logout</Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <li>
+                      <Link to={"/login"}>Login</Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
