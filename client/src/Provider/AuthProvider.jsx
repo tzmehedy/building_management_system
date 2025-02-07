@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { createContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import auth from "../Firebase/firebase.config";
-
+import axios from "axios"
 
 export const AuthContext = createContext()
 const provider = new GoogleAuthProvider()
@@ -20,7 +20,6 @@ const AuthProvider = ({children}) => {
         setLoading(true)
         return createUserWithEmailAndPassword(auth, email,password)
     }
-
     const loginWithEmailAndPassword = (email, password)=>{
         setLoading(true)
         return signInWithEmailAndPassword(auth,email,password)
@@ -38,10 +37,23 @@ const AuthProvider = ({children}) => {
         })
     }
 
+    const userRole = async(currentUser)=>{
+        console.log(currentUser)
+        const userInfo = {
+          email: currentUser?.email,
+          role: "member",
+          status: "verified",
+        };
+        await axios.put(`${import.meta.env.VITE_URL}/users`, userInfo);
+    }
+
     useEffect(()=>{
         const unSubscribe = onAuthStateChanged(auth, currentUser=>{
-            setLoading(false)
             setUser(currentUser)
+            if(currentUser){
+                userRole(currentUser)
+            }
+            setLoading(false)
         })
         return ()=>{
             unSubscribe()
