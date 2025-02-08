@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import ApartmentCard from "./ApartmentCard";
 
 const Apartment = () => {
   const axiosPublic = useAxiosPublic()
@@ -20,7 +21,11 @@ const Apartment = () => {
        <div className="text-center">
         <h1 className="text-4xl font-bold">All Apartments</h1>
        </div>
-       <div>
+       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 container mx-auto mt-20">
+
+        {
+          allApartments.map(apartment => <ApartmentCard apartment={apartment} key={apartment._id}></ApartmentCard>)
+        }
 
        </div>
       </div>

@@ -38,7 +38,6 @@ const AuthProvider = ({children}) => {
     }
 
     const userRole = async(currentUser)=>{
-        console.log(currentUser)
         const userInfo = {
           email: currentUser?.email,
           role: "member",

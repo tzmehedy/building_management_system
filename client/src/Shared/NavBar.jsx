@@ -21,7 +21,7 @@ const NavBar = () => {
   
     
     return (
-      <div className="fixed z-50 bg-[#344B8F] opacity-80 top-0 container mx-auto max-w-full">
+      <div className="fixed z-50  opacity-80 top-0 container mx-auto max-w-full">
         <div className="flex justify-center">
           <Link to={"/"}>
             <img className="h-20 w-48" src={logo} alt="" />
@@ -83,10 +83,28 @@ const NavBar = () => {
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal  space-x-2">
               <li className="text-xl font-bold">
-                <NavLink to={"/"}>Home</NavLink>
+                <NavLink
+                  style={({ isActive }) => {
+                    return {
+                      color: isActive ? "blue" : "",
+                    };
+                  }}
+                  to={"/"}
+                >
+                  Home
+                </NavLink>
               </li>
               <li className="text-xl font-bold">
-                <NavLink to={"/apartment"}>Apartment</NavLink>
+                <NavLink
+                  style={({ isActive }) => {
+                    return {
+                      color: isActive ? "blue" : "",
+                    };
+                  }}
+                  to={"/apartment"}
+                >
+                  Apartment
+                </NavLink>
               </li>
             </ul>
           </div>
