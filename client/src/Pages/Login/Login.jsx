@@ -1,5 +1,5 @@
 import { FaArrowAltCircleLeft } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaGoogle } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
 import { toast } from "react-toastify";
@@ -7,12 +7,13 @@ import { toast } from "react-toastify";
 const Login = () => {
   const { loginWithGoogle, loginWithEmailAndPassword } = useAuth();
   const navigate = useNavigate()
-
+  const location = useLocation()
+  console.log(location)
   const handelLogiWithGoogle = () =>{
     loginWithGoogle()
     .then(()=>{
       toast.success("Login Successfully")
-      navigate("/")
+      navigate(`${location?.state ? location?.state?.from: "/"}`)
 
     })
     .catch((err)=>{
@@ -28,7 +29,7 @@ const Login = () => {
     loginWithEmailAndPassword(email,password)
     .then(()=>{
       toast.success("Login Successfully")
-      navigate("/")
+      navigate(`${location?.state ? location?.state?.from : "/"}`);
     })
     .catch(err=>{
       toast.error(err.message)

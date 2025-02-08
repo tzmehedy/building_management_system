@@ -28,6 +28,7 @@ async function run() {
   try {
     const usersCollection = client.db("BuildingManagementSystem").collection("allUsers")
     const allApartments = client.db("BuildingManagementSystem").collection("allApartments")
+    const allAgreements = client.db("BuildingManagementSystem").collection("allAgreements")
 
     app.put("/users", async(req,res)=>{
         const userInfo = req.body
@@ -59,6 +60,10 @@ async function run() {
     app.get("/allApartment-count", async(req,res)=>{
       const count = await allApartments.countDocuments()
       res.send({count})
+    })
+
+    app.post("/allAgreements", async(req,res)=>{
+      
     })
     
     console.log(

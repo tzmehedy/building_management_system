@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import ApartmentCard from "./ApartmentCard";
 import { useEffect, useState } from "react";
+
+
 const Apartment = () => {
   const axiosPublic = useAxiosPublic();
   const itemPerPage = 6;
@@ -29,6 +31,8 @@ const handelPagination = (val) =>{
     setCurrentPage(val),
     refetch()
   }
+
+
   
   if (isLoading) return (
     <div className="flex justify-center items-center h-screen">

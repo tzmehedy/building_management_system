@@ -1,8 +1,34 @@
 import PropTypes from "prop-types";
+import useAuth from "../../Hooks/useAuth";
+import {useLocation, useNavigate} from "react-router-dom"
 
 const ApartmentCard = ({apartment}) => {
+    const {user} = useAuth()
     const { apartment_image, floor_no, block_name, apartment_no, rent } =
       apartment
+    const navigate = useNavigate()
+    const location = useLocation()
+    console.log(location)
+    const handelAgreement = () => {
+        if(user){
+            const agreementInfo = {
+              a_userName: user?.displayName,
+              a_email: user?.email,
+              floor_no,
+              block_name,
+              apartment_no,
+              rent,
+              status: "pending",
+            };
+            console.log(agreementInfo)
+
+        }
+        else{
+            navigate("/login", {state:{from:location.pathname}})
+        }
+    };
+
+
     return (
       <div className="card bg-slate-200 shadow-2xl rounded-t-2xl ">
         <img
@@ -20,7 +46,7 @@ const ApartmentCard = ({apartment}) => {
             <p>Price: {rent}</p>
           </div>
           <div className="text-end">
-            <button className="btn bg-[#344B8F] text-white font-bold">
+            <button onClick={handelAgreement} className="btn bg-[#344B8F] text-white font-bold">
               Agreement
             </button>
           </div>
