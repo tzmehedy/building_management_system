@@ -43,14 +43,22 @@ async function run() {
             ...userInfo,
             Timestamp: new Date()
           },
-        };
+        };  
         const result = await usersCollection.updateOne(query, updateUser, option)
         res.send(result)
     })
 
     app.get("/allApartments", async(req,res)=>{
-      const result = await allApartments.find().toArray()
+      const page= parseInt(req.query.page) - 1
+      const size= parseInt(req.query.size)
+      console.log(page,size)
+      const result = await allApartments.find().skip(page*size).limit(size).toArray()
       res.send(result)
+    })
+
+    app.get("/allApartment-count", async(req,res)=>{
+      const count = await allApartments.countDocuments()
+      res.send({count})
     })
     
     console.log(
