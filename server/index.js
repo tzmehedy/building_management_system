@@ -52,7 +52,6 @@ async function run() {
     app.get("/allApartments", async(req,res)=>{
       const page= parseInt(req.query.page) - 1
       const size= parseInt(req.query.size)
-      console.log(page,size)
       const result = await allApartments.find().skip(page*size).limit(size).toArray()
       res.send(result)
     })
@@ -63,7 +62,16 @@ async function run() {
     })
 
     app.post("/allAgreements", async(req,res)=>{
-      
+      const agreementInfo = req.body
+      const result = await allAgreements.insertOne(agreementInfo);
+      res.send(result) 
+    })
+
+    app.post("/isExist", async(req,res)=>{
+      const user = req.body
+      const query={a_email: user?.email}
+      const isExist = await allAgreements.findOne(query)
+      res.send({isExist})
     })
     
     console.log(

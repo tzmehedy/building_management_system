@@ -8,7 +8,6 @@ const Login = () => {
   const { loginWithGoogle, loginWithEmailAndPassword } = useAuth();
   const navigate = useNavigate()
   const location = useLocation()
-  console.log(location)
   const handelLogiWithGoogle = () =>{
     loginWithGoogle()
     .then(()=>{
