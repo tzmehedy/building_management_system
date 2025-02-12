@@ -3,7 +3,10 @@ import logo from "../../assets/images/logo (2).png"
 import { HiOutlineHome } from "react-icons/hi2";
 import { CgProfile } from "react-icons/cg";
 import { TfiAnnouncement } from "react-icons/tfi";
+import useUserRole from "../../Hooks/useUserRole";
 const Dashboard = () => {
+    const role = useUserRole()
+    console.log(role)
     return (
       <div className="flex  container mx-auto">
         <div className="md:min-w-76 h-screen bg-[#344B8F]">
