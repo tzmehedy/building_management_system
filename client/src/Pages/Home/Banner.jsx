@@ -16,8 +16,8 @@ const Banner = () => {
             <h1 className="text-6xl text-white font-bold">
               A New Standard <br /> in Living
             </h1>
-            <button className="w-32 h-20 hover:cursor-pointer">
-              <video className="rounded-full" src={video1} autoPlay></video>
+            <button className="btn bg-[#1015EC] text-white font-bold w-32 h-10 border-0 shadow-none hover:cursor-pointer">
+              Explore More
             </button>
           </div>
         </div>

@@ -56,6 +56,14 @@ async function run() {
       res.send(result)
     })
 
+    app.get("/user-role/:email",async(req,res)=>{
+      const email = req.params.email 
+      const query = {email:email}
+      const result = await usersCollection.findOne(query)
+      const role = result?.role
+      res.send({role})
+    })
+
     app.get("/allApartment-count", async(req,res)=>{
       const count = await allApartments.countDocuments()
       res.send({count})
@@ -65,6 +73,13 @@ async function run() {
       const agreementInfo = req.body
       const result = await allAgreements.insertOne(agreementInfo);
       res.send(result) 
+    })
+
+    app.get("/agreement/:email",async(req,res)=>{
+      const email = req.params.email
+      const query = {a_email: email}
+      const result = await allAgreements.findOne(query)
+      res.send(result)
     })
 
     app.post("/isExist", async(req,res)=>{
