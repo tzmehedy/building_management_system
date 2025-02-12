@@ -6,6 +6,8 @@ import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import PrivateRoutes from "./PrivateRoutes";
 import Dashboard from "../Pages/Dashboard/Dashboard";
+import Profile from "../Pages/Dashboard/Shared/Profile";
+import Announcement from "../Pages/Dashboard/Shared/Announcement";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +40,16 @@ const router = createBrowserRouter([
         <Dashboard></Dashboard>
       </PrivateRoutes>
     ),
+    children: [
+      {
+        path: "profile",
+        element: <Profile></Profile>,
+      },
+      {
+        path: "announcement",
+        element: <Announcement></Announcement>
+      },
+    ],
   },
 ]);
 
