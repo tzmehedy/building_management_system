@@ -7,12 +7,12 @@ const Dashboard = () => {
     const role = useUserRole()
     console.log(role)
     return (
-      <div className="flex  container mx-auto">
+      <div className="flex px-2">
         <div className="md:min-w-76 h-screen bg-[#344B8F]">
           <DashboardNavbar></DashboardNavbar>
         </div>
 
-        <div className="md:w-full">
+        <div className="w-full">
           <Outlet></Outlet>
         </div>
       </div>

@@ -30,12 +30,12 @@ const DashboardNavbar = () => {
           <ul className="p-10 space-y-2 text-lg">
             <li className="hover:bg-[#4A5565] px-3 py-2 text-lg">
               <NavLink
-                className={({ isActive }) =>
+                className={({ isActive}) =>
                   isActive
-                    ? "font-bold text-white flex items-center"
-                    : "flex items-center"
+                    ? "flex items-center font-bold"
+                    : "flex items-center "
                 }
-                to={"home"}
+                to={"/dashboard"}
               >
                 <HiOutlineHome className="mr-2" />
                 Home
@@ -53,11 +53,7 @@ const DashboardNavbar = () => {
               </NavLink>
             </li>
 
-            {
-              user &&  role === "member" && <MemberNavbar></MemberNavbar>
-            }
-
-            
+            {user && role === "member" && <MemberNavbar></MemberNavbar>}
           </ul>
         </div>
 
@@ -78,7 +74,10 @@ const DashboardNavbar = () => {
               </NavLink>
             </li>
             <li className="hover:bg-[#4A5565] px-3 py-2 text-lg">
-              <div onClick={handelLogout} className="flex items-center cursor-pointer">
+              <div
+                onClick={handelLogout}
+                className="flex items-center cursor-pointer"
+              >
                 <MdLogout className="mr-2" />
                 Logout
               </div>
