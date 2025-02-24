@@ -10,6 +10,7 @@ import Profile from "../Pages/Dashboard/Shared/Profile";
 import Announcement from "../Pages/Dashboard/Shared/Announcement";
 import MakePayments from "../Pages/Dashboard/MemberPages/MakePayments";
 import PaymentsHistory from "../Pages/Dashboard/MemberPages/PaymentsHistory";
+import CheckOutPage from "../Pages/Dashboard/CheckOutPage";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
         path: "payment-history",
         element: <PaymentsHistory></PaymentsHistory>
       },
+      {
+        path: "check-out",
+        element: <CheckOutPage></CheckOutPage>
+      }
     ],
   },
 ]);

@@ -29,6 +29,7 @@ async function run() {
     const usersCollection = client.db("BuildingManagementSystem").collection("allUsers")
     const allApartments = client.db("BuildingManagementSystem").collection("allApartments")
     const allAgreements = client.db("BuildingManagementSystem").collection("allAgreements")
+    const couponCollections = client.db("BuildingManagementSystem").collection("coupons")
 
     app.put("/users", async(req,res)=>{
         const userInfo = req.body
@@ -86,6 +87,14 @@ async function run() {
       const user = req.body
       const query={a_email: user?.email}
       const isExist = await allAgreements.findOne(query)
+      res.send({isExist})
+    })
+
+    app.post("/couponIsExist", async(req,res)=>{
+      const {coupon} = req.body 
+      const query = {code: coupon}
+      const isExist = await couponCollections.findOne(query)
+      if(!isExist) return res.status(404).send({message: "The code is not valid"})
       res.send({isExist})
     })
     
