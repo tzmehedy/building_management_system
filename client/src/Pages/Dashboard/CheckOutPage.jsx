@@ -2,16 +2,21 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import axios from "axios";
 
-
 const CheckOutPage = ({ month, agreementData }) => {
     const [errorMessage,setErrorMessage] = useState()
+    const [updatedRent, setUpdatedRent] = useState(agreementData?.rent)
+    const [close, setClose] = useState(false)
     const checkCoupon = async(e)=>{
         e.preventDefault()
         const coupon = e.target.coupon.value 
         await axios.post(`${import.meta.env.VITE_URL}/couponIsExist`, {coupon})
-        .then(result=>{
-            console.log(result)
+        .then(()=>{
             setErrorMessage("")
+            const currentRent = agreementData?.rent 
+            const percent = parseInt(coupon.split("-")[0]); 
+            const calculatedRent = currentRent - (currentRent * percent/100) 
+            setUpdatedRent(calculatedRent)
+            setClose(true)
         })
         .catch(()=>{
             setErrorMessage("The Code is not Valid")
@@ -45,7 +50,7 @@ const CheckOutPage = ({ month, agreementData }) => {
             <span className="text-white ">{agreementData?.apartment_no}</span>
           </p>
           <p>
-            Rent: <span className="text-white ">${agreementData?.rent}</span>
+            Rent: <span className="text-white ">${updatedRent}</span>
           </p>
           <p>
             Month: <span className="text-white ">{month}</span>
@@ -63,10 +68,14 @@ const CheckOutPage = ({ month, agreementData }) => {
                 id=""
               />
 
-              {errorMessage? <>
-              <p className="text-red-800">{errorMessage}</p>
-              </>: <></>}
-              <button type="submit" className="btn px-4 py-5 shadow-none">
+              {errorMessage ? (
+                <>
+                  <p className="text-red-800">{errorMessage}</p>
+                </>
+              ) : (
+                <></>
+              )}
+              <button disabled={close} type="submit" className="btn px-4 py-5 shadow-none">
                 Apply
               </button>
             </form>
