@@ -4,6 +4,8 @@ const cors = require("cors")
 require("dotenv").config()
 const { MongoClient, ServerApiVersion, Timestamp } = require("mongodb");
 
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 const port = process.env.PORT || 5000
 
 app.use(cors())
@@ -30,6 +32,21 @@ async function run() {
     const allApartments = client.db("BuildingManagementSystem").collection("allApartments")
     const allAgreements = client.db("BuildingManagementSystem").collection("allAgreements")
     const couponCollections = client.db("BuildingManagementSystem").collection("coupons")
+
+
+
+    app.post("/create-stripe-intent", async(req,res)=>{
+      const {price} = req.body 
+      const priceInCent = parseFloat(price * 100)
+      const { client_secret } = await stripe.paymentIntents.create({
+        amount: priceInCent,
+        currency: "usd",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+      res.send({ clientSecret: client_secret })
+    })
 
     app.put("/users", async(req,res)=>{
         const userInfo = req.body

@@ -1,7 +1,11 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckOutForm from "./CheckOutForm";
 
+const stripePromise = loadStripe(`${import.meta.env.VITE_PublishableKey}`);
 const CheckOutPage = ({ month, agreementData }) => {
     const [errorMessage,setErrorMessage] = useState()
     const [updatedRent, setUpdatedRent] = useState(agreementData?.rent)
@@ -75,10 +79,23 @@ const CheckOutPage = ({ month, agreementData }) => {
               ) : (
                 <></>
               )}
-              <button disabled={close} type="submit" className="btn px-4 py-5 shadow-none">
+              <button
+                disabled={close}
+                type="submit"
+                className="btn px-4 py-5 shadow-none"
+              >
                 Apply
               </button>
             </form>
+          </div>
+
+          <div>
+            <Elements stripe={stripePromise}>
+              <CheckOutForm
+                updatedRent={updatedRent}
+                agreementData={agreementData}
+              ></CheckOutForm>
+            </Elements>
           </div>
         </div>
       </div>
