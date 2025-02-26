@@ -2,7 +2,7 @@ const express = require("express")
 const app = express()
 const cors = require("cors")
 require("dotenv").config()
-const { MongoClient, ServerApiVersion, Timestamp } = require("mongodb");
+const { MongoClient, ServerApiVersion, Timestamp, ObjectId } = require("mongodb");
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -33,7 +33,7 @@ async function run() {
     const allAgreements = client.db("BuildingManagementSystem").collection("allAgreements")
     const couponCollections = client.db("BuildingManagementSystem").collection("coupons")
 
-
+    const paymentCollections = client.db("BuildingManagementSystem").collection("payments")
 
     app.post("/create-stripe-intent", async(req,res)=>{
       const {price} = req.body 
@@ -87,6 +87,18 @@ async function run() {
       res.send({count})
     })
 
+    app.patch("/change-status/:apartment_no", async (req, res) => {
+      const apartmentNo = req.params.apartment_no;
+      const query = { apartment_no: apartmentNo };
+      const updateDoc = {
+        $set: {
+          status: "booked",
+        },
+      };
+      const result = await allApartments.updateOne(query, updateDoc);
+      res.send(result);
+    });
+
     app.post("/allAgreements", async(req,res)=>{
       const agreementInfo = req.body
       const result = await allAgreements.insertOne(agreementInfo);
@@ -111,8 +123,26 @@ async function run() {
       const {coupon} = req.body 
       const query = {code: coupon}
       const isExist = await couponCollections.findOne(query)
-      if(!isExist) return res.status(404).send({message: "The code is not valid"})
+      if(!isExist) return res.status(404).send({message: "The code is not valid"})  
       res.send({isExist})
+    })
+
+    app.post("/payment-info", async(req,res)=>{
+      const paymentInfo = req.body 
+      const result = await paymentCollections.insertOne(paymentInfo)
+      res.send(result)    
+    })
+
+    app.get("/paymentInfoByEmail/:email", async(req,res)=>{
+      const email = req.params.email
+      const month = req.query.searchText
+      let query = { a_email: email }
+      if(month !== "null" && month !=="all"){
+        query = {...query, month:month}
+      }
+      console.log(query)
+      const result = await paymentCollections.find(query).toArray()
+      res.send(result)
     })
     
     console.log(

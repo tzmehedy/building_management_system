@@ -11,7 +11,7 @@ const ApartmentCard = ({ apartment }) => {
   const axiosPublic = useAxiosPublic();
   const isExist = useAgreementIsExist();
   const { user } = useAuth();
-  const { apartment_image, floor_no, block_name, apartment_no, rent } =
+  const { apartment_image, floor_no, block_name, apartment_no, rent,status } =
     apartment;
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,7 +63,7 @@ const ApartmentCard = ({ apartment }) => {
         </div>
         <div className="text-end">
           <button
-            disabled={isExist === true}
+            disabled={isExist === true || status === "booked"}
             onClick={handelAgreement}
             className="btn bg-[#344B8F] text-white font-bold"
           >

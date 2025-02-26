@@ -92,6 +92,7 @@ const CheckOutPage = ({ month, agreementData }) => {
           <div>
             <Elements stripe={stripePromise}>
               <CheckOutForm
+                month={month}
                 updatedRent={updatedRent}
                 agreementData={agreementData}
               ></CheckOutForm>

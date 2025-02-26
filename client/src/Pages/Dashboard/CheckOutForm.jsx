@@ -4,13 +4,19 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
+import { toast } from "react-toastify";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
-const CheckOutForm = ({ updatedRent,agreementData }) => {
+const CheckOutForm = ({ month,updatedRent,agreementData }) => {
   const {user} = useAuth()
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure()
   const [clientSecret, setClientSecret] = useState()
+  const [errorMessage, setErrorMessage] = useState()
+  const [processing, setProcessing] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if(updatedRent && updatedRent>1){
@@ -27,7 +33,9 @@ const CheckOutForm = ({ updatedRent,agreementData }) => {
 
   const handleSubmit = async (event) => {
     // Block native form submission.
-    event.preventDefault();
+    setProcessing(true)
+    event.preventDefault()
+
 
     if (!stripe || !elements) {
       // Stripe.js has not loaded yet. Make sure to disable
@@ -45,15 +53,16 @@ const CheckOutForm = ({ updatedRent,agreementData }) => {
     }
 
     // Use your card Element with other Stripe.js APIs
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    const { error} = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
 
     if (error) {
-      console.log("[error]", error);
-    } else {
-      console.log("[PaymentMethod]", paymentMethod);
+      setErrorMessage(error.message)
+    } 
+    else{
+      setErrorMessage("")
     }
 
 
@@ -70,10 +79,29 @@ const CheckOutForm = ({ updatedRent,agreementData }) => {
 
   
     if(confirmError){
-      console.log(confirmError)
+      setErrorMessage(confirmError.message)
     }
-    if(paymentIntent.status === 'succeeded'){
+    if(paymentIntent?.status === 'succeeded'){
+      setErrorMessage("")
       console.log(paymentIntent)
+      const paymentInfo = {
+        ...agreementData,
+        transitionId: paymentIntent.id,
+        date: new Date(),
+        month:month
+      }
+      toast.success("Payment Successful")
+
+      delete paymentInfo._id
+      delete paymentInfo.rent 
+      paymentInfo.rent = updatedRent
+      // step-1 set payment info into database 
+      await axiosSecure.post("/payment-info", paymentInfo)
+
+      // step-2 update apartment status 
+      await axiosSecure.patch(`/change-status/${agreementData.apartment_no}`);
+      navigate("/dashboard/payment-history")
+      setProcessing(false)
     }
   }
 
@@ -95,15 +123,17 @@ const CheckOutForm = ({ updatedRent,agreementData }) => {
           },
         }}
       />
-      <button className="btn" type="submit" disabled={!stripe}>
-        Pay
+      {errorMessage && <p className="text-red-500 text-sm  ">{errorMessage}</p>}
+      <button  className="btn" type="submit" disabled={!stripe || processing}>
+        {processing? <p className="animate-spin"><AiOutlineLoading3Quarters ></AiOutlineLoading3Quarters></p>: "Pay"}
       </button>
     </form>
   );
 };
 CheckOutForm.propTypes = {
   agreementData: PropTypes.object,
-  updatedRent: PropTypes.number
+  updatedRent: PropTypes.number,
+  month: PropTypes.string
 };
 
 export default CheckOutForm;
