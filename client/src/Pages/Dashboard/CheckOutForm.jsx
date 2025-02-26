@@ -1,13 +1,16 @@
 import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js"
 import "./CheckOutForm.css"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useAuth from "../../Hooks/useAuth";
 
 const CheckOutForm = ({ updatedRent,agreementData }) => {
+  const {user} = useAuth()
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure()
+  const [clientSecret, setClientSecret] = useState()
 
   useEffect(() => {
     if(updatedRent && updatedRent>1){
@@ -19,7 +22,7 @@ const CheckOutForm = ({ updatedRent,agreementData }) => {
     const { data } = await axiosSecure.post("/create-stripe-intent", {
       price: price,
     });
-    console.log(data)
+    setClientSecret(data.clientSecret);
   };
 
   const handleSubmit = async (event) => {
@@ -52,7 +55,27 @@ const CheckOutForm = ({ updatedRent,agreementData }) => {
     } else {
       console.log("[PaymentMethod]", paymentMethod);
     }
-  };
+
+
+    const { error: confirmError, paymentIntent } =
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: {
+            email: user?.email,
+            name: user?.displayName,
+          },
+        },
+      });
+
+  
+    if(confirmError){
+      console.log(confirmError)
+    }
+    if(paymentIntent.status === 'succeeded'){
+      console.log(paymentIntent)
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit}>
