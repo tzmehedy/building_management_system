@@ -8,6 +8,7 @@ import useUserRole from "../../../Hooks/useUserRole";
 import MemberNavbar from "./MemberNavbar";
 import { MdLogout } from "react-icons/md";
 import { toast } from "react-toastify";
+import AdminNavbar from "./AdminNavbar";
 
 const DashboardNavbar = () => {
     const {user, logOut} = useAuth()
@@ -54,6 +55,10 @@ const DashboardNavbar = () => {
             </li>
 
             {user && role === "member" && <MemberNavbar></MemberNavbar>}
+
+            {
+              user && role === "admin" && <AdminNavbar></AdminNavbar>
+            }
           </ul>
         </div>
 

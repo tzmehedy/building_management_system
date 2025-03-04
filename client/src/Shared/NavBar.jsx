@@ -116,8 +116,8 @@ const NavBar = () => {
                   <>
                     <img
                       className="w-7 h-7 rounded-full"
-                      src={user?.photoURL}
                       referrerPolicy="true"
+                      src={user?.photoURL}
                       alt=""
                     />
                   </>

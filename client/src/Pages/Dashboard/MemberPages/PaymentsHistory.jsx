@@ -7,7 +7,6 @@ const PaymentsHistory = () => {
     const {user} = useAuth()
     const axiosSecure = useAxiosSecure()
     const [searchText, setSearchText] = useState(null)
-    j
     const{data:allPayments, isLoading, refetch} = useQuery({
         queryKey: ["allPayments", user?.email],
         queryFn: async() =>{

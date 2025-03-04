@@ -11,6 +11,7 @@ import Announcement from "../Pages/Dashboard/Shared/Announcement";
 import MakePayments from "../Pages/Dashboard/MemberPages/MakePayments";
 import PaymentsHistory from "../Pages/Dashboard/MemberPages/PaymentsHistory";
 import CheckOutPage from "../Pages/Dashboard/CheckOutPage";
+import ManageUsers from "../Pages/Dashboard/AdminPages/ManageUsers";
 
 const router = createBrowserRouter([
   {
@@ -52,18 +53,26 @@ const router = createBrowserRouter([
         path: "announcement",
         element: <Announcement></Announcement>,
       },
+
+      // Member Route
       {
         path: "make-payment",
         element: <MakePayments></MakePayments>,
       },
       {
         path: "payment-history",
-        element: <PaymentsHistory></PaymentsHistory>
+        element: <PaymentsHistory></PaymentsHistory>,
       },
       {
         path: "check-out",
-        element: <CheckOutPage></CheckOutPage>
-      }
+        element: <CheckOutPage></CheckOutPage>,
+      },
+
+      // Admin Routes
+      {
+        path: "manage-member",
+        element: <ManageUsers></ManageUsers>
+      },
     ],
   },
 ]);

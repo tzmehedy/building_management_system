@@ -48,6 +48,11 @@ async function run() {
       res.send({ clientSecret: client_secret })
     })
 
+    app.get("/users", async(req,res)=>{
+      const result = await usersCollection.find().toArray()
+      res.send(result)
+    })
+
     app.put("/users", async(req,res)=>{
         const userInfo = req.body
         const query = {email: userInfo?.email}
@@ -65,6 +70,18 @@ async function run() {
         };  
         const result = await usersCollection.updateOne(query, updateUser, option)
         res.send(result)
+    })
+
+    app.patch("/users/:email", async(req,res)=>{
+      const email = req.params.email 
+      const query = {email:email}
+      const updatedDoc = {
+        $set:{
+          role: "user"
+        }
+      }
+      const result = await usersCollection.updateOne(query, updatedDoc)
+      res.send(result)
     })
 
     app.get("/allApartments", async(req,res)=>{
@@ -140,7 +157,6 @@ async function run() {
       if(month !== "null" && month !=="all"){
         query = {...query, month:month}
       }
-      console.log(query)
       const result = await paymentCollections.find(query).toArray()
       res.send(result)
     })

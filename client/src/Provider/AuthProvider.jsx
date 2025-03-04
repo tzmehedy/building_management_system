@@ -40,6 +40,8 @@ const AuthProvider = ({children}) => {
     const userRole = async(currentUser)=>{
         const userInfo = {
           email: currentUser?.email,
+          photo: currentUser?.photoURL,
+          name: currentUser?.displayName,
           role: "member",
           status: "verified",
         };
