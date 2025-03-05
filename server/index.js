@@ -75,12 +75,13 @@ async function run() {
 
     app.patch("/users/:email", async(req,res)=>{
       const email = req.params.email 
+      const {role} = req.body
       const query = {email:email}
       const updatedDoc = {
-        $set:{
-          role: "user"
-        }
-      }
+        $set: {
+          role: role
+        },
+      };
       const result = await usersCollection.updateOne(query, updatedDoc)
       res.send(result)
     })
@@ -123,6 +124,10 @@ async function run() {
       const agreementInfo = req.body
       const result = await allAgreements.insertOne(agreementInfo);
       res.send(result) 
+    })
+    app.get("/allAgreements", async(req,res)=>{
+      const result = await allAgreements.find().toArray()
+      res.send(result)
     })
 
     app.get("/agreement/:email",async(req,res)=>{

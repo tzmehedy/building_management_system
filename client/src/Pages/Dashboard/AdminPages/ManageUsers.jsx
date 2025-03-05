@@ -20,8 +20,8 @@ const ManageUsers = () => {
       </div>
     );
 
-  const handelRemove = async(email) =>{
-    const {data} = await axiosSecure.patch(`/users/${email}`)
+  const handelRemove = async(email, role) =>{
+    const {data} = await axiosSecure.patch(`/users/${email}`, {role})
     if(data.modifiedCount === 1){
         refetch()
     }
@@ -70,7 +70,7 @@ const ManageUsers = () => {
                   <td>{user?.email}</td>
                   <td>{user?.role}</td>
                   <td>
-                    <button onClick={()=>handelRemove(user?.email)} disabled={user?.role === "admin"} className="btn rounded-full bg-red-500 opacity-90">Remove</button>
+                    <button onClick={()=>handelRemove(user?.email, "user")} disabled={user?.role === "admin"} className="btn rounded-full bg-red-500 opacity-90">Remove</button>
                   </td>
                 </tr>
               ))}
