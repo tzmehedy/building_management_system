@@ -32,6 +32,7 @@ async function run() {
     const allApartments = client.db("BuildingManagementSystem").collection("allApartments")
     const allAgreements = client.db("BuildingManagementSystem").collection("allAgreements")
     const couponCollections = client.db("BuildingManagementSystem").collection("coupons")
+    const allAnnouncements = client.db("BuildingManagementSystem").collection("allAnnouncements")
 
     const paymentCollections = client.db("BuildingManagementSystem").collection("payments")
 
@@ -83,6 +84,8 @@ async function run() {
       const result = await usersCollection.updateOne(query, updatedDoc)
       res.send(result)
     })
+
+
 
     app.get("/allApartments", async(req,res)=>{
       const page= parseInt(req.query.page) - 1
@@ -158,6 +161,12 @@ async function run() {
         query = {...query, month:month}
       }
       const result = await paymentCollections.find(query).toArray()
+      res.send(result)
+    })
+
+    app.post("/announcement", async(req,res)=>{
+      const announcementDetails = req.body 
+      const result = await allAnnouncements.insertOne(announcementDetails)
       res.send(result)
     })
     

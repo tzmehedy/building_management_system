@@ -12,6 +12,7 @@ import MakePayments from "../Pages/Dashboard/MemberPages/MakePayments";
 import PaymentsHistory from "../Pages/Dashboard/MemberPages/PaymentsHistory";
 import CheckOutPage from "../Pages/Dashboard/CheckOutPage";
 import ManageUsers from "../Pages/Dashboard/AdminPages/ManageUsers";
+import ManageAnnouncements from "../Pages/Dashboard/AdminPages/ManageAnnouncements";
 
 const router = createBrowserRouter([
   {
@@ -71,7 +72,11 @@ const router = createBrowserRouter([
       // Admin Routes
       {
         path: "manage-member",
-        element: <ManageUsers></ManageUsers>
+        element: <ManageUsers></ManageUsers>,
+      },
+      {
+        path: "manage-announcement",
+        element: <ManageAnnouncements></ManageAnnouncements>
       },
     ],
   },
