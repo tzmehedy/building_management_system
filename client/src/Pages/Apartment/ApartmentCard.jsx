@@ -42,6 +42,7 @@ const ApartmentCard = ({ apartment }) => {
         apartment_no,
         rent,
         status: "pending",
+        agreement_request_date: new Date()
       };
       mutateAsync(agreementInfo);
     } else {

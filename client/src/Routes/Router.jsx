@@ -13,6 +13,7 @@ import PaymentsHistory from "../Pages/Dashboard/MemberPages/PaymentsHistory";
 import CheckOutPage from "../Pages/Dashboard/CheckOutPage";
 import ManageUsers from "../Pages/Dashboard/AdminPages/ManageUsers";
 import ManageAnnouncements from "../Pages/Dashboard/AdminPages/ManageAnnouncements";
+import AllAgreementsRequest from "../Pages/Dashboard/AdminPages/AllAgreementsRequest";
 
 const router = createBrowserRouter([
   {
@@ -76,7 +77,11 @@ const router = createBrowserRouter([
       },
       {
         path: "manage-announcement",
-        element: <ManageAnnouncements></ManageAnnouncements>
+        element: <ManageAnnouncements></ManageAnnouncements>,
+      },
+      {
+        path: "agreement-requests",
+        element: <AllAgreementsRequest></AllAgreementsRequest>
       },
     ],
   },
