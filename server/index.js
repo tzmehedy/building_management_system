@@ -129,6 +129,17 @@ async function run() {
       const result = await allAgreements.find().toArray()
       res.send(result)
     })
+    app.patch("/allAgreements/:id", async(req,res)=>{
+      const id = req.params.id 
+      const query = {_id: new ObjectId(id)}
+      const updatedDoc = {
+        $set:{
+          status: "accepted"
+        }
+      }
+      const result = await allAgreements.updateOne(query, updatedDoc)
+      res.send(result)
+    })
 
     app.get("/agreement/:email",async(req,res)=>{
       const email = req.params.email

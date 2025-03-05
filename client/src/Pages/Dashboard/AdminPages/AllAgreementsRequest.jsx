@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { toast } from "react-toastify";
 
 
 const AllAgreementsRequest = () => {
     const axiosSecure = useAxiosSecure()
 
-    const {data: allAgreements, isLoading} = useQuery({
+    const {data: allAgreements, isLoading, refetch} = useQuery({
         queryKey: ["allAgreements"],
         queryFn: async() =>{
             const { data } = await axiosSecure.get("/allAgreements")
@@ -18,6 +19,15 @@ const AllAgreementsRequest = () => {
           <span className="loading loading-spinner loading-xl"></span>
         </div>
       );
+
+    const handelAccept = async(userEmail,role, id) =>{
+        const res1 = axiosSecure.patch(`/users/${userEmail}`, {role})
+        const res2 = axiosSecure.patch(`/allAgreements/${id}`)
+        if (res1.modifiedCount > 0 && res2.modifiedCount > 0){
+            toast.success("The agreement accepted")
+             refetch();
+        }
+    }
     return (
       <div>
         <div className=" ">
@@ -40,6 +50,7 @@ const AllAgreementsRequest = () => {
                   <th>Room No</th>
                   <th>Rent</th>
                   <th>Agreement request date</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -54,9 +65,27 @@ const AllAgreementsRequest = () => {
                     <td>{agreement?.apartment_no}</td>
                     <td>${agreement?.rent}</td>
                     <td>{agreement?.agreement_request_date}</td>
-                    <td className="flex space-x-2">
-                        <button className="btn bg-green-400">Accept</button>
-                        <button className="btn bg-red-400">Reject</button>
+                    <td>{agreement?.status}</td>
+                    <td className="flex space-x-1">
+                      <button
+                        disabled={agreement?.status === "accepted"}
+                        onClick={() =>
+                          handelAccept(
+                            agreement?.a_email,
+                            "member",
+                            agreement?._id
+                          )
+                        }
+                        className="btn bg-green-400"
+                      >
+                        Accept
+                      </button>
+                      <button
+                        disabled={agreement?.status === "accepted"}
+                        className="btn bg-red-400"
+                      >
+                        Reject
+                      </button>
                     </td>
                   </tr>
                 ))}
