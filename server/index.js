@@ -131,10 +131,12 @@ async function run() {
     })
     app.patch("/allAgreements/:id", async(req,res)=>{
       const id = req.params.id 
+    const {status} = req.body
       const query = {_id: new ObjectId(id)}
       const updatedDoc = {
         $set:{
-          status: "accepted"
+          status: status,
+          accepted_date: new Date()
         }
       }
       const result = await allAgreements.updateOne(query, updatedDoc)
