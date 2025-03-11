@@ -33,7 +33,7 @@ const ManageAnnouncements = () => {
       <div>
         <div className=" ">
           <h1 className="uppercase underline text-2xl mt-3 text-[#344B8F] font-bold text-center">
-            Management Announcement
+            Manage Announcement
           </h1>
         </div>
 

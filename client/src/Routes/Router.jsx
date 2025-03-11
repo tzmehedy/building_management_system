@@ -14,6 +14,7 @@ import CheckOutPage from "../Pages/Dashboard/CheckOutPage";
 import ManageUsers from "../Pages/Dashboard/AdminPages/ManageUsers";
 import ManageAnnouncements from "../Pages/Dashboard/AdminPages/ManageAnnouncements";
 import AllAgreementsRequest from "../Pages/Dashboard/AdminPages/AllAgreementsRequest";
+import ManageCoupons from "../Pages/Dashboard/AdminPages/ManageCoupons";
 
 const router = createBrowserRouter([
   {
@@ -81,7 +82,11 @@ const router = createBrowserRouter([
       },
       {
         path: "agreement-requests",
-        element: <AllAgreementsRequest></AllAgreementsRequest>
+        element: <AllAgreementsRequest></AllAgreementsRequest>,
+      },
+      {
+        path: "manage-coupons",
+        element: <ManageCoupons></ManageCoupons>
       },
     ],
   },

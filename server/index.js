@@ -165,6 +165,17 @@ async function run() {
       res.send({isExist})
     })
 
+    app.get("/allCoupons", async(req,res)=>{
+      const result = await couponCollections.find().toArray()
+      res.send(result)
+    })
+
+    app.post("/addAllCoupons", async( req,res)=>{
+      const couponInfo = req.body 
+      const result = await couponCollections.insertOne(couponInfo)
+      res.send(result)
+    })
+
     app.post("/payment-info", async(req,res)=>{
       const paymentInfo = req.body 
       const result = await paymentCollections.insertOne(paymentInfo)
