@@ -198,6 +198,10 @@ async function run() {
       const result = await allAnnouncements.insertOne(announcementDetails)
       res.send(result)
     })
+    app.get("/announcement", async(req,res)=>{
+      const result = await allAnnouncements.find().toArray()
+      res.send(result)
+    })
     
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
