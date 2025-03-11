@@ -1,12 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+import useUserRole from "../../../Hooks/useUserRole";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const Profile = () => {
     const {user} = useAuth()
-    console.log(user)
+    const role = useUserRole()
     const axiosPublic = useAxiosPublic()
-    console.log(user?.email)
+    const axiosSecure = useAxiosSecure()
+
+    const { data: adminDashboardInfo } = useQuery({
+      queryKey: ["adminDashboardInfo"],
+      queryFn: async () => {
+        const { data } = await axiosSecure.get("/adminDashboardInfo")
+        return data;
+      },
+    });
+
     const {data:agreementInfo} = useQuery({
         queryKey: ["agreementInfo"],
         queryFn: async()=>{
@@ -37,27 +48,94 @@ const Profile = () => {
                 <p className="text-lg">Email: {user?.email}</p>
               </div>
 
-              <div className="">
-                <p>Agreement Accept Date:</p>
-              </div>
+              {role === "user" ||
+                (role === "member" && (
+                  <>
+                    <div className="">
+                      <p>
+                        Agreement Accept Date:{" "}
+                        {agreementInfo?.accepted_date
+                          ? `${agreementInfo?.accepted_date}`
+                          : "Wait For Accept"}
+                      </p>
+                    </div>
 
-              <div className="my-10">
-                <h1 className="text-xl font-bold">Apartment Info</h1>
-                <div className="flex justify-between px-10 py-5">
-                  <p>
-                    Apartment No:{" "}
-                    {agreementInfo ? `${agreementInfo.apartment_no}` : "none"}
-                  </p>
-                  <p>
-                    Block No:{" "}
-                    {agreementInfo ? `${agreementInfo.block_name}` : "none"}
-                  </p>
-                  <p>
-                    Floor No:{" "}
-                    {agreementInfo ? `${agreementInfo.floor_no}` : "none"}
-                  </p>
-                </div>
-              </div>
+                    <div className="my-10">
+                      <h1 className="text-xl font-bold">Apartment Info</h1>
+                      <div className="flex justify-between px-10 py-5">
+                        <p>
+                          Apartment No:{" "}
+                          {agreementInfo
+                            ? `${agreementInfo.apartment_no}`
+                            : "none"}
+                        </p>
+                        <p>
+                          Block No:{" "}
+                          {agreementInfo
+                            ? `${agreementInfo.block_name}`
+                            : "none"}
+                        </p>
+                        <p>
+                          Floor No:{" "}
+                          {agreementInfo ? `${agreementInfo.floor_no}` : "none"}
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                ))}
+
+              {role === "admin" && (
+                <>
+                  <div className="py-5">
+                    <h1 className="font-bold text-lg">
+                      Total No Of Rooms: {adminDashboardInfo?.totalRooms}
+                    </h1>
+
+                    <div className="flex justify-center gap-10 mt-4">
+                      <div>
+                        <div
+                          className="radial-progress text-[#FB2C36] font-bold"
+                          style={
+                            {
+                              "--value": `${adminDashboardInfo?.percentageOfAvailableRoom}`,
+                            } /* as React.CSSProperties */
+                          }
+                          aria-valuenow={
+                            adminDashboardInfo?.percentageOfAvailableRoom
+                          }
+                          role="progressbar"
+                        >
+                          {adminDashboardInfo?.percentageOfAvailableRoom} %
+                        </div>
+                        <p>Available Rooms</p>
+                      </div>
+
+                      <div>
+                        <div
+                          className="radial-progress text-[#FF6900] font-bold"
+                          style={
+                            {
+                              "--value": `${adminDashboardInfo?.percentageOfUnavailableRooms}`,
+                            } /* as React.CSSProperties */
+                          }
+                          aria-valuenow={
+                            adminDashboardInfo?.percentageOfUnavailableRooms
+                          }
+                          role="progressbar"
+                        >
+                          {adminDashboardInfo?.percentageOfUnavailableRooms} %
+                        </div>
+                        <p>Unavailable Rooms</p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-center gap-10 mt-4 font-bold">
+                      <p>No Of Users: {adminDashboardInfo?.npOfUsers}</p>
+                      <p>No Of Members: {adminDashboardInfo?.noOfMembers}</p>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

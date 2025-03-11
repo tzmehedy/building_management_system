@@ -202,6 +202,25 @@ async function run() {
       const result = await allAnnouncements.find().toArray()
       res.send(result)
     })
+
+    app.get("/adminDashboardInfo", async(req,res)=>{
+      const totalNumberOfRoom = await allApartments.countDocuments()
+      const totalNumberOfBookedRooms = await allAgreements.countDocuments()
+      const availAbleRooms = totalNumberOfRoom - totalNumberOfBookedRooms 
+      const percentageOfTotalNoOfAvailableRooms =
+        (availAbleRooms * 100) / totalNumberOfRoom
+      const percentageOfUnavailableRooms = (totalNumberOfBookedRooms * 100)/totalNumberOfRoom
+
+      const noOfUsers = await usersCollection.countDocuments({role: "user"})
+      const noOfMembers = await usersCollection.countDocuments({role: "member"})
+      res.send({
+        totalRooms: totalNumberOfRoom,
+        percentageOfAvailableRoom: percentageOfTotalNoOfAvailableRooms,
+        percentageOfUnavailableRooms: percentageOfUnavailableRooms,
+        npOfUsers: noOfUsers,
+        noOfMembers: noOfMembers,
+      });
+    })
     
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
