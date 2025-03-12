@@ -30,7 +30,7 @@ const DashboardNavbar = () => {
 
         <div>
           <ul className="p-10 space-y-2 text-lg">
-            <li className="hover:bg-[#4A5565] px-3 py-2 text-lg">
+            {/* <li className="hover:bg-[#4A5565] px-3 py-2 text-lg">
               <NavLink
                 className={({ isActive}) =>
                   isActive
@@ -42,7 +42,7 @@ const DashboardNavbar = () => {
                 <HiOutlineHome className="mr-2" />
                 Home
               </NavLink>
-            </li>
+            </li> */}
             <li className="hover:bg-[#4A5565] px-3 py-2">
               <NavLink
                 className={({ isActive }) =>

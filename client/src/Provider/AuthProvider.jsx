@@ -48,11 +48,21 @@ const AuthProvider = ({children}) => {
         await axios.put(`${import.meta.env.VITE_URL}/users`, userInfo);
     }
 
+    const getToken = async(currentUser) =>{
+        const { data } = await axios.post(`${import.meta.env.VITE_URL}/jwt`, {email: currentUser?.email})
+        console.log(data)
+        return data.token
+    }
+
     useEffect(()=>{
-        const unSubscribe = onAuthStateChanged(auth, currentUser=>{
+        const unSubscribe = onAuthStateChanged(auth, async currentUser=>{
             setUser(currentUser)
             if(currentUser){
                 userRole(currentUser)
+               const token = await getToken(currentUser?.email)
+               if(token){
+                localStorage.setItem("Token", token)
+               }
             }
             setLoading(false)
         })

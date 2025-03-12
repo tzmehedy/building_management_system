@@ -4,6 +4,8 @@ const cors = require("cors")
 require("dotenv").config()
 const { MongoClient, ServerApiVersion, Timestamp, ObjectId } = require("mongodb");
 
+const jwt = require("jsonwebtoken")
+
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const port = process.env.PORT || 5000
@@ -35,6 +37,15 @@ async function run() {
     const allAnnouncements = client.db("BuildingManagementSystem").collection("allAnnouncements")
 
     const paymentCollections = client.db("BuildingManagementSystem").collection("payments")
+
+
+    app.post("/jwt", async(req,res)=>{
+      const user = req.body 
+      const token = jwt.sign(user, process.env.SECRET_KEY, {
+        expiresIn: "1h"
+      })
+      res.send({token:token})
+    })
 
     app.post("/create-stripe-intent", async(req,res)=>{
       const {price} = req.body 
